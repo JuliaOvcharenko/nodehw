@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "name": "Post one",
+        "description": "description one",
+        "image": "https://static.wikia.nocookie.net/kult-imeni-balansa/images/7/75/Catvolodya1.png/revision/latest?cb=20211209061704&path-prefix=ru",
+        "likes" : 0
+    },
+    {
+        "id": 2,
+        "name": "Post two",
+        "description": "description two",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxssdw6AsQlx3PJdLAgQLJjKZXlO8o_ngLpJMDOczSwJLLt1gTIL6v0OxivABFTOM7xyM&usqp=CAU",
+        "likes" : 1
+    }
+
+]
