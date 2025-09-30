@@ -12,6 +12,31 @@
         "description": "description two",
         "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxssdw6AsQlx3PJdLAgQLJjKZXlO8o_ngLpJMDOczSwJLLt1gTIL6v0OxivABFTOM7xyM&usqp=CAU",
         "likes" : 1
+    },
+
+    {
+        "id": 3,
+        "name": "Post three",
+        "description": "description two",
+        "image": "https://encrypted-tbn0.gstagTIL6v0OxivABFTOM7xyM&usqp=CAU",
+        "likes" : 1
+    },
+
+    {
+        "id": 4,
+        "name": "Post fouth",
+        "description": "description two",
+        "image": "https://encrypted-tbn0.gsjKZXlO8o_ngLpJMDOczSwJLLt1gTIL6v0OxivABFTOM7xyM&usqp=CAU",
+        "likes" : 1
+    },
+
+    {
+        "id": 5,
+        "name": "Post fifth",
+        "description": "description two",
+        "image": "https://encrypted-tbn0xivABFTOM7xyM&usqp=CAU",
+        "likes" : 1
     }
+
 
 ]
