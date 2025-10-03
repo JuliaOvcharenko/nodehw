@@ -2,12 +2,25 @@ const express = require('express')
 const fs = require('fs')
 const path = require('path')
 const moment = require('moment')
+const fsPromises = require('fs/promises')
+
+// const fsPromises = require('fs/promises')
+// const fsPromises = require('fs/promises')
+// const fsPromises = require('fs/promises')
+// const fsPromises = require('fs/promises')
+// const fsPromises = require('fs/promises')
+// const fsPromises = require('fs/promises')
+// const fsPromises = require('fs/promises')
+// const fsPromises = require('fs/promises')
+// const fsPromises = require('fs/promises')
+// const fsPromises = require('fs/promises')
 
 let getTime = () => {
     return moment().format('HH:mm:ss')
 }
 
 const app = express()
+app.use(express.json())
 
 const HOST = "localhost"
 const PORT = 8002
@@ -73,6 +86,40 @@ app.get('/posts/:id', (req, res) => {
     res.status(200).json(post)
 })
 
+
+app.post('/posts', async (req, res) => {
+    const body = req.body
+    const userProduct = {...body, id: posts.length + 1}
+
+    if(!body){
+        res.status(422).json("Body?")
+        return
+    }
+    if(!userProduct.name){
+        res.status(422).json("Name is required.")
+        return
+    }
+
+    if(!userProduct.description){
+        res.status(422).json("Description is required.")
+        return
+    }
+
+    if(!userProduct.image){
+        res.status(422).json("Image is required.")
+        return
+    }
+
+    posts.push(userProduct)
+    try {
+        await fsPromises.writeFile(postsPath, JSON.stringify(posts, null, 4))
+        res.status(201).json('Product created')
+    } catch (error) {
+        console.log(error)
+        res.status(500).json("Creation failed")
+    }
+
+})
 
 
 app.listen(PORT, HOST, () => {
