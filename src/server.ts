@@ -18,6 +18,7 @@ let getTime = () => {
 
 const app = express()
 app.use(express.json())
+app.use(PostRouter);
 
 const HOST = "localhost"
 const PORT = 8002

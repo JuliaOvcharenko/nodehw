@@ -4,3 +4,8 @@ export interface Post {
     description: string,
     image: string
 }
+
+export type CreatePostData = Omit<Post, 'id'>;
+
+export type UpdatePostData = Partial<Omit<Post, 'id'>>;
+

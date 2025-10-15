@@ -2,6 +2,7 @@ import path from "path"
 import fs from "fs";
 import fsPromises from "fs/promises";
 import { Post } from "./posts.types";
+import { CreatePostData, UpdatePostData } from "./posts.types";
 
 const postsPath = path.join(__dirname, "posts.json");
 let posts: Post[] = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
@@ -27,7 +28,7 @@ export const PostService = {
         return posts.find((p) => p.id === PostId);
     },
 
-    createPost: async (data: Post) => {
+    createPost: async (data: CreatePostData) => {
         try {
             const userProduct = { ...data, id: posts.length + 1 };
             posts.push(userProduct);
@@ -38,6 +39,24 @@ export const PostService = {
             console.log(error);
             return null;
         }
+    },
+
+    updatePost: async(id: number, data: UpdatePostData) => {
+        const findedPost = PostService.getPostById(id);
+        if (!findedPost) {
+            return null;
+        }
+        try {
+            const updatedPost = {...findedPost, ...data}
+            posts.splice(id - 1, 1, updatedPost)
+            await fsPromises.writeFile(postsPath, JSON.stringify(posts, null, 4))
+            return updatedPost
+            
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+        
     }
 };
 
