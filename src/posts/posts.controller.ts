@@ -1,7 +1,8 @@
-const PostService = require("./posts.service");
+import { Request, Response } from "express";
+import { PostService } from "./posts.service";
 
-const PostController = {
-    getAllPosts: (req, res) => {
+export const PostController = {
+    getAllPosts: (req: Request, res:Response) => {
         const take = Number(req.query.take);
         const skip = Number(req.query.skip);
 
@@ -14,7 +15,9 @@ const PostController = {
         }
     },
 
-    getPostById: (req, res) => {
+    // В url приходит "id" - string. 
+    getPostById: (req: Request<{ id: string }>, res:Response) => {
+        // Преобразование в число("5" -> 5)
         const PostId = +req.params.id;
 
         if (isNaN(PostId)) {
@@ -32,7 +35,7 @@ const PostController = {
         res.status(200).json(post);
     },
 
-    createPost: async (req, res) => {
+    createPost: async (req: Request, res:Response) => {
         const body = req.body;
 
         if (!body) {
@@ -72,4 +75,3 @@ const PostController = {
     }
 };
 
-module.exports = PostController;

@@ -8,8 +8,9 @@
 // const fsPromises = require('fs/promises')
 // const fsPromises = require('fs/promises')
 // const fsPromises = require('fs/promises')
-const express = require('express')
-const PostRouter = require('./posts/posts.router')
+import express from 'express'
+import moment from 'moment'
+import {PostRouter} from './posts/posts.router'
 
 let getTime = () => {
     return moment().format('HH:mm:ss')

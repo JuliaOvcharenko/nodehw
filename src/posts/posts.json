@@ -34,5 +34,11 @@
         "description": "one",
         "image": "https://static.wikia.image",
         "id": 6
+    },
+    {
+        "name": "Post 7",
+        "description": "one",
+        "image": "image",
+        "id": 7
     }
 ]
