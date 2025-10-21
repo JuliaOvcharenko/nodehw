@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { PostService } from "./posts.service";
+import { PostControllerContract } from "./posts.types";
 
-export const PostController = {
-    getAllPosts: (req: Request, res:Response) => {
+export const PostController: PostControllerContract = {
+    getAllPosts: (req, res) => {
         const take = Number(req.query.take);
         const skip = Number(req.query.skip);
 
@@ -16,7 +17,7 @@ export const PostController = {
     },
 
     // В url приходит "id" - string. 
-    getPostById: (req: Request<{ id: string }>, res:Response) => {
+    getPostById: (req, res) => {
         // Преобразование в число("5" -> 5)
         const PostId = +req.params.id;
 
@@ -35,7 +36,7 @@ export const PostController = {
         res.status(200).json(post);
     },
 
-    createPost: async (req: Request, res:Response) => {
+    createPost: async (req, res) => {
         const body = req.body;
 
         if (!body) {
@@ -76,7 +77,7 @@ export const PostController = {
     },
 
     // Объясняла почему сделала именно так в 19 строке. 
-    updatePost: async (req: Request<{ id: string }>, res: Response) => {
+    updatePost: async (req, res) => {
         const PostId = +req.params.id;
         const body = req.body;
 

@@ -1,15 +1,15 @@
 import path from "path"
 import fs from "fs";
 import fsPromises from "fs/promises";
-import { Post } from "./posts.types";
-import { CreatePostData, UpdatePostData } from "./posts.types";
+import { Post, PostServiceContract } from "./posts.types";
+
 
 const postsPath = path.join(__dirname, "posts.json");
 let posts: Post[] = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
 
 
-export const PostService = {
-    getAllPosts: (skip:number, take?:number) => {
+export const PostService: PostServiceContract = {
+    getAllPosts: (take?, skip?) => {
         if (!skip && !take){
             return posts
         }
@@ -20,15 +20,14 @@ export const PostService = {
         if (!skip && take){
             return posts.slice(0, take)
         }
-        
-        return posts.slice(skip, take ? skip + take : undefined);
+        return posts.slice(take, (skip || 0) + (take || 0))
     },
 
     getPostById: (PostId:number) => {
         return posts.find((p) => p.id === PostId);
     },
 
-    createPost: async (data: CreatePostData) => {
+    createPost: async (data) => {
         try {
             const userProduct = { ...data, id: posts.length + 1 };
             posts.push(userProduct);
@@ -41,7 +40,7 @@ export const PostService = {
         }
     },
 
-    updatePost: async(id: number, data: UpdatePostData) => {
+    updatePost: async(id, data) => {
         const findedPost = PostService.getPostById(id);
         if (!findedPost) {
             return null;
