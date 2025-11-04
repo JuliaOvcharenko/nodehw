@@ -3,12 +3,12 @@ import { PostService } from "./posts.service";
 import { PostControllerContract } from "./posts.types";
 
 export const PostController: PostControllerContract = {
-    getAllPosts: (req, res) => {
+    getAllPosts: async(req, res) => {
         const take = Number(req.query.take);
         const skip = Number(req.query.skip);
 
         try {
-            const result = PostService.getAllPosts(skip, take);
+            const result = await PostService.getAllPosts(take, skip);
             res.status(200).json(result);
         } catch (error) {
             console.error(error);
@@ -17,7 +17,7 @@ export const PostController: PostControllerContract = {
     },
 
     // В url приходит "id" - string. 
-    getPostById: (req, res) => {
+    getPostById: async (req, res) => {
         // Преобразование в число("5" -> 5)
         const PostId = +req.params.id;
 
@@ -26,7 +26,7 @@ export const PostController: PostControllerContract = {
             return;
         }
 
-        const post = PostService.getPostById(PostId);
+        const post = await PostService.getPostById(PostId);
 
         if (!post) {
             res.status(404).json("No post with such id");
@@ -125,4 +125,23 @@ export const PostController: PostControllerContract = {
 
         res.status(200).json('Post updated successfully');
     },
+
+    deletePost: async (req, res) => {
+        const PostId = +req.params.id;
+        if (isNaN(PostId)) {
+            res.status(400).json("PostId must be a number");
+            return;
+        }
+        const findedPost = PostService.getPostById(PostId);
+        if (!findedPost) {
+            res.status(404).json("No post with such id");
+            return;
+        }
+        const deletedPost = await PostService.deletePost(PostId);
+        if (!deletedPost) {
+            res.status(500).json("Delete failed");
+            return;
+        }
+        res.status(200).json('Post deleted successfully');
+    }
 }

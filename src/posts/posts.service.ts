@@ -1,62 +1,79 @@
-import path from "path"
-import fs from "fs";
-import fsPromises from "fs/promises";
-import { Post, PostServiceContract } from "./posts.types";
+import { Post, PostServiceContract, CreatePost, UpdatePost} from "./posts.types";
+import { PrismaClient } from "../client/prisma-client";
+import { Prisma } from "../generated/prisma";
 
 
-const postsPath = path.join(__dirname, "posts.json");
-let posts: Post[] = JSON.parse(fs.readFileSync(postsPath, 'utf-8'));
-
-
+// 1. FindMany
 export const PostService: PostServiceContract = {
-    getAllPosts: (take?, skip?) => {
-        if (!skip && !take){
-            return posts
+    getAllPosts: async(take, skip) => {
+        try {
+            const posts = await PrismaClient.post.findMany({
+                take: take || undefined,
+                skip: skip || undefined,
+            });
+            return posts;
+            
+        } catch (error) {
+            console.log(error)
+            if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                    console.log('Failed to create relation between Product and Category')
+                    throw new Error("Failed to create relation between Product and Category") 
+                }
+    throw error
         }
-
-        if (skip && !take){
-            return posts.slice(skip)
-        } 
-        if (!skip && take){
-            return posts.slice(0, take)
-        }
-        return posts.slice(take, (skip || 0) + (take || 0))
     },
 
-    getPostById: (PostId:number) => {
-        return posts.find((p) => p.id === PostId);
+    getPostById: async (id) => {
+        try {
+            const post = await PrismaClient.post.findUnique({
+                where: { id },
+            });
+            return post; 
+
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
     },
 
     createPost: async (data) => {
         try {
-            const userProduct = { ...data, id: posts.length + 1 };
-            posts.push(userProduct);
-            await fsPromises.writeFile(postsPath, JSON.stringify(posts, null, 4));
-            return userProduct;
-            
+            const newPost = await PrismaClient.post.create({
+                data: data
+            });
+            return newPost;
+
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return null;
         }
     },
 
     updatePost: async(id, data) => {
-        const findedPost = PostService.getPostById(id);
-        if (!findedPost) {
+        try {
+            const updatedPost = await PrismaClient.post.update({
+                where: { id },
+                data: data
+            });
+            return updatedPost;
+
+        } catch (error) {
+            console.error(error);
             return null;
         }
+    },
+
+    deletePost: async(id) => {
         try {
-            const updatedPost = {...findedPost, ...data}
-            posts.splice(id - 1, 1, updatedPost)
-            await fsPromises.writeFile(postsPath, JSON.stringify(posts, null, 4))
-            return updatedPost
-            
+            const deletedPost = await PrismaClient.post.delete({
+                where: { id }
+            });
+            return deletedPost;
+
         } catch (error) {
-            console.log(error)
-            return null
+            console.error(error);
+            return null;
         }
-        
-    }
-};
+}};
 
 
