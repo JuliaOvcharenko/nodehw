@@ -38,3 +38,29 @@ model PostTag {
 // Создаем id для PostTag из двух иностранных ключей 
   @@id([postId, tagId])
 }
+
+
+
+
+
+model Product {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+// model ProductCategory {
+//   post    Post  @relation(fields: [postId], references: [id])
+//   postId  Int
+//   tag     Tag   @relation(fields: [tagId], references: [id])
+//   tagId   Int 
+
+// // Создаем id для PostTag из двух иностранных ключей 
+//   @@id([postId, tagId])
+// }
+

@@ -1,79 +1,23 @@
-import { Post, PostServiceContract, CreatePost, UpdatePost} from "./posts.types";
-import { PrismaClient } from "../client/prisma-client";
-import { Prisma } from "../generated/prisma";
+import { PostRepository } from "./posts.repository";
+import { PostServiceContract } from "./posts.types";
 
 
-// 1. FindMany
 export const PostService: PostServiceContract = {
-    getAllPosts: async(take, skip) => {
-        try {
-            const posts = await PrismaClient.post.findMany({
-                take: take || undefined,
-                skip: skip || undefined,
-            });
-            return posts;
-            
-        } catch (error) {
-            console.log(error)
-            if (error instanceof Prisma.PrismaClientKnownRequestError) {
-                    console.log('Failed to create relation between Product and Category')
-                    throw new Error("Failed to create relation between Product and Category") 
-                }
-    throw error
-        }
+    getAllPosts: (take, skip) => {
+        return PostRepository.getAllPosts(take, skip);
     },
 
-    getPostById: async (id) => {
-        try {
-            const post = await PrismaClient.post.findUnique({
-                where: { id },
-            });
-            return post; 
-
-        } catch (error) {
-            console.error(error);
-            return null;
-        }
+    getPostById: (id) => {
+        return PostRepository.getPostById(id);
     },
 
-    createPost: async (data) => {
-        try {
-            const newPost = await PrismaClient.post.create({
-                data: data
-            });
-            return newPost;
-
-        } catch (error) {
-            console.error(error);
-            return null;
-        }
+    createPost: (data) => {
+        return PostRepository.createPost(data);
+    },  
+    updatePost: (id, data) => {
+        return PostRepository.updatePost(id, data);
     },
-
-    updatePost: async(id, data) => {
-        try {
-            const updatedPost = await PrismaClient.post.update({
-                where: { id },
-                data: data
-            });
-            return updatedPost;
-
-        } catch (error) {
-            console.error(error);
-            return null;
-        }
-    },
-
-    deletePost: async(id) => {
-        try {
-            const deletedPost = await PrismaClient.post.delete({
-                where: { id }
-            });
-            return deletedPost;
-
-        } catch (error) {
-            console.error(error);
-            return null;
-        }
-}};
-
-
+    deletePost: (id) => {
+        return PostRepository.deletePost(id);
+    }   
+}

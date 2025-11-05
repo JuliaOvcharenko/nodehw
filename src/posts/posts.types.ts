@@ -22,6 +22,14 @@ export interface PostServiceContract {
     deletePost: (id: number) => Promise<Post | null>
 }
 
+export interface PostRepositoryContract {
+    getAllPosts: (take?: number, skip?: number) => Promise<Post[]>
+    getPostById: (id: number) => Promise<Post | null>
+    createPost: (data: CreatePost) => Promise<Post | null>
+    updatePost: (id: number, data: UpdatePost) => Promise<Post | null>
+    deletePost: (id: number) => Promise<Post | null>
+}
+
 export interface PostControllerContract {
     // getAllPosts:
     // 1. нету динам. параметров
