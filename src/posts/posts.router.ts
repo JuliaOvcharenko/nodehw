@@ -3,12 +3,12 @@ import { PostController } from './posts.controller';
 export const PostRouter = Router();
 
 
-PostRouter.get('/posts', PostController.getAllPosts)
+PostRouter.get('/', PostController.getAllPosts)
 
-PostRouter.get('/posts/:id', PostController.getPostById)
+PostRouter.get('/:id', PostController.getPostById)
 
-PostRouter.post('/posts', PostController.createPost)
+PostRouter.post('/', PostController.createPost)
 
-PostRouter.patch('/posts/:id', PostController.updatePost)
+PostRouter.patch('/:id', PostController.updatePost)
 
-PostRouter.delete('/posts/:id', PostController.deletePost)
+PostRouter.delete('/:id', PostController.deletePost)
