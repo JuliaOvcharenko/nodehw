@@ -3,6 +3,7 @@ import { sign } from "jsonwebtoken";
 import { UserRepository } from "./user.repository";
 import { UserServiceContract } from "./user.types";
 import { ENV } from "../config/env";
+import { compare, hash } from "bcryptjs"
 
 // USER_EXISTS -> пользователь существует
 // NOT_FOUND -> Не найден(пользователь). 404 HTTP STATUS CODE
@@ -19,6 +20,11 @@ export const UserService: UserServiceContract = {
 
         if (user.password != credentials.password){
             throw new Error("WRONG_CREDENTIALS")
+        }
+
+        const isMatch = await compare(credentials.password, user.password)
+        if (!isMatch) {
+            throw new Error('WRONG_CREDENTIALS')
         }
 
         // 1 параметр - данные, которые нужно записать в токен в виде объекта.
@@ -40,7 +46,14 @@ export const UserService: UserServiceContract = {
             throw new Error("USER_EXISTS")
         }
 
-        const newUser = await UserRepository.createUser(credentials)
+        const hashedPassword = await hash(credentials.password, 10)
+
+        const hashedCredentials = {
+            ...credentials,
+            password: hashedPassword
+        }
+
+        const newUser = await UserRepository.createUser(hashedCredentials)
 
         const JWT_token = sign(
             {id: newUser.id},
@@ -60,5 +73,3 @@ export const UserService: UserServiceContract = {
         return user
     }
 }
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzYzMjM3Nzg5LCJleHAiOjE3NjM4NDI1ODl9.HYIOHWmuAp0NnB_EXqF3ilVRjrQOGfnB-FyARKjrSXM
