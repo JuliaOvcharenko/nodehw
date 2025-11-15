@@ -3,6 +3,7 @@ import { sign } from "jsonwebtoken";
 import { UserRepository } from "./user.repository";
 import { UserServiceContract } from "./user.types";
 import { ENV } from "../config/env";
+
 // USER_EXISTS -> пользователь существует
 // NOT_FOUND -> Не найден(пользователь). 404 HTTP STATUS CODE
 // WRONG_CREDENTIALS -> неправильные данные для входа 
@@ -21,11 +22,8 @@ export const UserService: UserServiceContract = {
         }
 
         // 1 параметр - данные, которые нужно записать в токен в виде объекта.
-        // 2 параметр - sicret key
+        // 2 параметр - secret key.
         // 3 параметр - options, хедеры. expiresIn - это время жизни токена.
-
-        //  Type Assertion (Утверждение типа) — это способ сказать компилятору TypeScript: 
-        //  "Эй, я, разработчик, знаю лучше тебя. Я уверен, что тип этого значения — вот такой". 
 
         const JWT_token = sign(
             {id: user.id},
@@ -62,3 +60,5 @@ export const UserService: UserServiceContract = {
         return user
     }
 }
+
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzYzMjM3Nzg5LCJleHAiOjE3NjM4NDI1ODl9.HYIOHWmuAp0NnB_EXqF3ilVRjrQOGfnB-FyARKjrSXM

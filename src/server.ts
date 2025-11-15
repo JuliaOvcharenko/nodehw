@@ -1,7 +1,8 @@
 import express from 'express'
 import moment from 'moment'
-import {PostRouter} from './posts/posts.router'
+import { PostRouter } from './posts/posts.router'
 import { TagRouter } from "./tags/tag.router";
+import { UserRouter } from "./user/user.router"
 
 const app = express()
 app.use(express.json())
@@ -12,6 +13,7 @@ let getTime = () => {
 
 app.use("/posts", PostRouter);
 app.use("/tags", TagRouter);
+app.use("/users", UserRouter)
 
 
 app.get('/timestamp', (req, res) => {
